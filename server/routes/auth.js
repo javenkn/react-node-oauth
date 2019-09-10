@@ -1,4 +1,4 @@
-require('dotenv');
+require('dotenv').config();
 
 const router = require('express').Router();
 const passport = require('passport');
