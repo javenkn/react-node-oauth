@@ -35,11 +35,10 @@ router.get('/github', passport.authenticate('github'));
 // After authorizing with Github
 router.get(
   '/github/callback',
-  passport.authenticate('github', { failureRedirect: '/auth/login' }),
-  function(req, res) {
-    // Successful authentication, redirect to the success route.
-    res.redirect('/auth/login/success');
-  },
+  passport.authenticate('github', {
+    successRedirect: 'http://localhost:3000',
+    failureRedirect: '/auth/login',
+  }),
 );
 
 module.exports = router;
