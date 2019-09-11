@@ -4,14 +4,16 @@ const router = require('express').Router();
 const passport = require('passport');
 
 // authorization login success
-router.get('/login/success', (req, res) => {
+router.get('/login/success', (req, res, next) => {
   if (req.user) {
     res.status(200).json({
       success: true,
       message: 'User is authenticated.',
-      userId: req.user,
+      user: req.user,
       cookies: req.cookies,
     });
+  } else {
+    next();
   }
 });
 
@@ -25,8 +27,7 @@ router.get('/login/failed', (req, res) => {
 
 // user logouts
 router.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('http://localhost:3000');
+  req.session.destroy();
 });
 
 // authorizes with Github
@@ -37,7 +38,7 @@ router.get(
   '/github/callback',
   passport.authenticate('github', {
     successRedirect: 'http://localhost:3000',
-    failureRedirect: '/auth/login',
+    failureRedirect: '/auth/login/failed',
   }),
 );
 

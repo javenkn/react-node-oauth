@@ -36,12 +36,12 @@ app.use(passport.session());
  * within the session small
  */
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, user);
 });
 
 // When subsequent requests are received, this ID is used to find the user
-passport.deserializeUser(function(id, done) {
-  done(null, id);
+passport.deserializeUser(function(user, done) {
+  done(null, user);
 });
 
 passport.use(
