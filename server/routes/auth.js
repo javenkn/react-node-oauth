@@ -5,14 +5,21 @@ const passport = require('passport');
 
 // authorization login success
 router.get('/login/success', (req, res) => {
-  console.log(res);
+  if (req.user) {
+    res.status(200).json({
+      success: true,
+      message: 'User is authenticated.',
+      userId: req.user,
+      cookies: req.cookies,
+    });
+  }
 });
 
 // authorization login failed
 router.get('/login/failed', (req, res) => {
   res.status(401).json({
     success: false,
-    message: 'Failed to authenticate',
+    message: 'Failed to authenticate.',
   });
 });
 
@@ -22,16 +29,17 @@ router.get('/logout', (req, res) => {
   res.redirect('http://localhost:3000');
 });
 
-// authorizes with github
+// authorizes with Github
 router.get('/github', passport.authenticate('github'));
 
-// redirects after github authorization
+// After authorizing with Github
 router.get(
-  '/github/redirect',
-  passport.authenticate('github', {
-    successRedirect: 'http://localhost:3000',
-    failureRedirect: '/auth/login/failed',
-  }),
+  '/github/callback',
+  passport.authenticate('github', { failureRedirect: '/auth/login' }),
+  function(req, res) {
+    // Successful authentication, redirect to the success route.
+    res.redirect('/auth/login/success');
+  },
 );
 
 module.exports = router;
