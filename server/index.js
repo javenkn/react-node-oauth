@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github').Strategy;
@@ -23,6 +24,8 @@ app.use(
   }),
 );
 
+// parse cookies
+app.use(cookieParser());
 // Passport initialization
 app.use(passport.initialize());
 // deserialize cookie from the browser
@@ -38,9 +41,6 @@ passport.serializeUser(function(user, done) {
 
 // When subsequent requests are received, this ID is used to find the user
 passport.deserializeUser(function(id, done) {
-  // User.findById(id, function(err, user) {
-  //   done(err, user);
-  // });
   done(null, id);
 });
 
@@ -52,11 +52,7 @@ passport.use(
       callbackURL: 'http://localhost:4000/auth/github/callback',
     },
     function(accessToken, refreshToken, profile, cb) {
-      // User.findOrCreate({ githubId: profile.id }, function(err, user) {
-      //   return cb(err, user);
-      // });
-      console.log(accessToken, refreshToken, profile, cb);
-      return cb(err, profile);
+      return cb(null, profile);
     },
   ),
 );
@@ -71,6 +67,19 @@ app.use(
 );
 
 app.use('/auth', authRoutes);
+
+// After user authorizes with Github, it redirects to '/'
+// if the user is authenticated, send back the user response
+// otherwise, send a 401 response which means that the user is not authenticated
+// authCheck before navigating to home page
+// app.get('/', authCheck, (req, res) => {
+//   res.status(200).json({
+//     authenticated: true,
+//     message: 'user successfully authenticated',
+//     user: req.user,
+//     cookies: req.cookies,
+//   });
+// });
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
