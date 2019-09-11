@@ -24,13 +24,15 @@ function App() {
       })
       .catch(err => console.log(err));
   }, []);
-  console.log(user);
+
   return (
     <div className='App'>
-      <Header />
+      <Header hasUser={!!user} setUser={setUser} />
       <img src={logo} className='App-logo' alt='logo' />
       <p style={{ color: 'white' }}>
-        Edit <code>src/App.js</code> and save to reload.
+        {!!user
+          ? `Welcome ${user.username}`
+          : `Edit ${<code>src/App.js</code>} and save to reload.`}
       </p>
       <a
         className='App-link'
