@@ -5,6 +5,7 @@ import Header from './ components/Header';
 
 function App() {
   const [user, setUser] = useState(null);
+
   useEffect(() => {
     fetch('http://localhost:4000/auth/login/success', {
       method: 'GET',
@@ -25,15 +26,31 @@ function App() {
       .catch(err => console.log(err));
   }, []);
 
+  const handleLogin = () => {
+    window.open('http://localhost:4000/auth/github', 'self');
+  };
+
+  const handleLogout = () => {
+    window.open('http://localhost:4000/auth/logout', 'self');
+    setUser(null);
+  };
+
   return (
     <div className='App'>
-      <Header hasUser={!!user} setUser={setUser} />
+      <Header
+        hasUser={!!user}
+        setUser={setUser}
+        handleLogin={handleLogin}
+        handleLogout={handleLogout}
+      />
       <img src={logo} className='App-logo' alt='logo' />
-      <p style={{ color: 'white' }}>
-        {!!user
-          ? `Welcome ${user.username}`
-          : `Edit ${<code>src/App.js</code>} and save to reload.`}
-      </p>
+      {!user ? (
+        <p style={{ color: 'white' }}>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+      ) : (
+        <p style={{ color: 'white' }}>Welcome {user.username}</p>
+      )}
       <a
         className='App-link'
         href='https://reactjs.org'
