@@ -27,7 +27,8 @@ router.get('/login/failed', (req, res) => {
 
 // user logouts
 router.get('/logout', (req, res) => {
-  req.session.destroy();
+  req.logout();
+  res.redirect('http://localhost:3000');
 });
 
 // authorizes with Github
