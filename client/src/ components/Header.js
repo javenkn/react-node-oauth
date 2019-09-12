@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Header({ hasUser, setUser }) {
+function Header({ hasUser, handleLogin, handleLogout }) {
   return (
     <header className='App-header'>
       <a className='App-link-header' href='http://localhost:3000/'>
@@ -8,14 +8,9 @@ function Header({ hasUser, setUser }) {
       </a>
       <a
         className='App-link-header'
-        href={
-          hasUser
-            ? 'http://localhost:4000/auth/logout'
-            : 'http://localhost:4000/auth/github'
-        }
+        onClick={hasUser ? handleLogout : handleLogin}
         target='_blank'
         rel='noopener noreferrer'
-        onClick={() => (hasUser ? setUser(null) : null)}
       >
         {hasUser ? 'Logout' : 'Sign in w/ Github'}
       </a>
