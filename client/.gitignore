@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-auth_config.json
+auth0_config.json
 
 # testing
 /coverage
