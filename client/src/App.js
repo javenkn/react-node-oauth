@@ -1,6 +1,10 @@
 import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
 import './App.css';
 import NavBar from './components/NavBar';
+import Profile from './components/Profile';
+import PrivateRoute from './components/PrivateRoute';
 import { useAuth0 } from './react-auth0-wrapper';
 
 function App() {
@@ -12,9 +16,15 @@ function App() {
 
   return (
     <div className='App'>
-      <header>
-        <NavBar />
-      </header>
+      <BrowserRouter>
+        <header>
+          <NavBar />
+        </header>
+        <Switch>
+          <Route path='/' exact />
+          <PrivateRoute path='/profile' component={Profile} />
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
