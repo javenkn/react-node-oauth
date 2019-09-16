@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { Auth0Provider } from './react-auth0-wrapper';
-import config from './auth_config.json';
+import config from './auth0_config.json';
 
 // A function that routes the user to the right place
 // after login
